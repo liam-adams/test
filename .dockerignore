@@ -1,0 +1,7 @@
+data
+docs
+helm
+terraform
+*.md
+.gitignore
+login.sh
