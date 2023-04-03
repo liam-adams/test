@@ -5,4 +5,4 @@ data
 *.onnx
 *.tfvars
 .terraform*
-*.tfstate
+*.tfstate*

@@ -10,9 +10,9 @@ module "search_api" {
   desired_capacity     = var.desired_capacity
   min_capacity         = var.min_capacity
   max_capacity         = var.max_capacity
-  redis_cluster_size   = var.redis_cluster_size
-  redis_instance_type  = var.redis_instance_type
-  redis_engine_version = var.redis_engine_version
-  redis_family         = var.redis_family
-  ecr_repo             = var.ecr_repo
+  #redis_cluster_size   = var.redis_cluster_size
+  #redis_instance_type  = var.redis_instance_type
+  #redis_engine_version = var.redis_engine_version
+  #redis_family         = var.redis_family
+  #ecr_repo             = var.ecr_repo
 }

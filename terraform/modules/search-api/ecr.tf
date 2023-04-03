@@ -1,3 +1,4 @@
+/*
 module "ecr" {
   source = "terraform-aws-modules/ecr/aws"
 
@@ -23,3 +24,4 @@ module "ecr" {
     ]
   })
 }
+*/

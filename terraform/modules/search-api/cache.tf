@@ -1,3 +1,4 @@
+/*
 module "elasticache-redis" {
   source  = "cloudposse/elasticache-redis/aws"
   version = "0.50.0"
@@ -17,3 +18,4 @@ module "elasticache-redis" {
   description                = "none"
   replication_group_id       = "none"
 }
+*/

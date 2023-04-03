@@ -43,6 +43,7 @@ variable max_capacity {
     type = number
 }
 
+/*
 variable redis_cluster_size {
     description = "size of redis cluster"
     type = number
@@ -67,3 +68,4 @@ variable ecr_repo {
     description = "ecr repo name"
     type = string
 }
+*/

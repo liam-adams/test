@@ -25,6 +25,9 @@ module "eks" {
     }
   }
 
+  cluster_addons = {}
+  # not authorized to create these
+  /*
   cluster_addons = {
     coredns = {
       most_recent = true
@@ -36,8 +39,16 @@ module "eks" {
       most_recent = true
     }
   }
+  */
+
+  # due to insufficient permissions
+  create_kms_key = false
+  create_cloudwatch_log_group = false
+  cluster_encryption_config = {}
+  enable_irsa = false
 }
 
+/*
 locals{
   temp_oidc_var = split("/", module.eks.oidc_provider_arn)
   oidc_var = join("", slice(local.temp_oidc_var, 1, length(local.temp_oidc_var)))
@@ -84,3 +95,4 @@ resource "aws_iam_role_policy_attachment" "test-attach" {
   role       = aws_iam_role.alb_role.name
   policy_arn = aws_iam_policy.alb_policy.arn
 }
+*/
