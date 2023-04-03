@@ -1,0 +1,21 @@
+name: search-api
+
+image:
+  repository: assessment/search-api
+  tag: latest
+  pullPolicy: IfNotPresent
+replicas: 1
+
+service:  
+  externalPort: 80
+  internalPort: 8000
+
+ingress:
+  class: alb
+
+service-account:
+  role-arn: arn:aws:iam::562646969323:role/AmazonEKSLoadBalancerControllerRole
+
+resources:
+  limits: {}
+  requests: {}

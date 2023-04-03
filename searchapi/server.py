@@ -12,8 +12,12 @@ def read_root():
 
 @app.get("/query/{query}")
 def query(query: str):
-    cats, proba = model.predict(query)
-    return {"query": query, "cats": cats, "prob": proba}
+    result = utils.get_cache_query(query)
+    if result is None:
+        cats, proba = model.predict(query)
+        result = {"query": query, "cats": cats, "prob": proba}
+        utils.cache_query(query, result)
+    return result
 
 if __name__ == '__main__':
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level='debug')

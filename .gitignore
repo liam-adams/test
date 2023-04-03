@@ -3,3 +3,4 @@ login.sh
 notes.md
 data
 *.onnx
+*.tfvars
