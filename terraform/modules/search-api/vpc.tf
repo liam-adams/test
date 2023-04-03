@@ -27,7 +27,7 @@ module "vpc" {
 resource "aws_security_group" "alb" {
   name        = "eks_alb_security_group"
   description = "Allow https"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     description      = "TLS from VPC"
@@ -50,7 +50,7 @@ resource "aws_security_group" "alb" {
 resource "aws_security_group" "redis" {
   name        = "eks_redis_security_group"
   description = "Allow traffic from eks"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     description      = "TLS from VPC"

@@ -38,16 +38,9 @@ module "eks" {
   }
 }
 
-resource "aws_iam_policy" "alb_policy" {
-  name        = "alb-policy"
-  description = "Policy for the ALB"
-
-  policy = file("alb-policy.json")
-}
-
 locals{
   temp_oidc_var = split("/", module.eks.oidc_provider_arn)
-  oidc_var = join("", slice(temp_oidc_var, 1, length(temp_oidc_var)))
+  oidc_var = join("", slice(local.temp_oidc_var, 1, length(local.temp_oidc_var)))
 }
 
 resource "aws_iam_role" "alb_role" {
@@ -84,7 +77,7 @@ resource "aws_iam_policy" "alb_policy" {
   name        = "alb-policy"
   description = "Policy for the ALB"
 
-  policy = file("alb-policy.json")
+  policy = file("${path.module}/alb-policy.json")
 }
 
 resource "aws_iam_role_policy_attachment" "test-attach" {

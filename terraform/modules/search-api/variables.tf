@@ -5,12 +5,12 @@ variable vpc_cidr {
 
 variable private_subnet_cidrs {
     description = "private cidrs for vpc"
-    type = list[string]
+    type = list(string)
 }
 
 variable public_subnet_cidrs {
     description = "public cidrs for vpc"
-    type = list[string]
+    type = list(string)
 }
 
 variable instance_type {
