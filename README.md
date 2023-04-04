@@ -14,5 +14,8 @@ cd scripts
 ## Deploy application
 ```bash
 cd scripts
-./deploy_app.sh
+./deploy_app.sh $docker_tag
 ```
+
+## Plot of response times
+![alt text](req_time.png "Response times for concurrent requests")

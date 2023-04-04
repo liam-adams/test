@@ -13,7 +13,7 @@ module "eks" {
 
   vpc_id = module.vpc.vpc_id
 
-  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access       = true
   cluster_endpoint_public_access_cidrs = var.public_access_ips
 
   # creates autoscaling group
@@ -50,6 +50,64 @@ module "eks" {
   create_cloudwatch_log_group = false
   cluster_encryption_config   = {}
   enable_irsa                 = false
+}
+
+# https://geekdudes.wordpress.com/2018/01/10/amazon-autosclaing-using-terraform/
+resource "aws_autoscaling_policy" "cpu_policy" {
+  count = length(module.eks.eks_managed_node_groups_autoscaling_group_names)
+  name                   = "example-cpu-policy${count.index}"
+  autoscaling_group_name = module.eks.eks_managed_node_groups_autoscaling_group_names[count.index]
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = "1"
+  cooldown               = "300"
+  policy_type            = "SimpleScaling"
+}
+
+resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
+  count = length(module.eks.eks_managed_node_groups_autoscaling_group_names)
+  alarm_name          = "example-cpu-alarm${count.index}"
+  alarm_description   = "example-cpu-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "30"
+  dimensions = {
+    "AutoScalingGroupName" = "${module.eks.eks_managed_node_groups_autoscaling_group_names[count.index]}"
+  }
+  actions_enabled = true
+  alarm_actions   = ["${aws_autoscaling_policy.cpu_policy[count.index].arn}"]
+}
+
+# scale down alarm
+resource "aws_autoscaling_policy" "cpu_policy_scaledown" {
+  count = length(module.eks.eks_managed_node_groups_autoscaling_group_names)
+  name                   = "example-cpu-policy-scaledown${count.index}"
+  autoscaling_group_name = module.eks.eks_managed_node_groups_autoscaling_group_names[count.index]
+  adjustment_type        = "ChangeInCapacity"
+  scaling_adjustment     = "-1"
+  cooldown               = "300"
+  policy_type            = "SimpleScaling"
+}
+
+resource "aws_cloudwatch_metric_alarm" "cpu_alarm_scaledown" {
+  count = length(module.eks.eks_managed_node_groups_autoscaling_group_names)
+  alarm_name          = "example-cpu-alarm-scaledown${count.index}"
+  alarm_description   = "example-cpu-alarm-scaledown"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "5"
+  dimensions = {
+    "AutoScalingGroupName" = "${module.eks.eks_managed_node_groups_autoscaling_group_names[count.index]}"
+  }
+  actions_enabled = true
+  alarm_actions   = ["${aws_autoscaling_policy.cpu_policy_scaledown[count.index].arn}"]
 }
 
 /*

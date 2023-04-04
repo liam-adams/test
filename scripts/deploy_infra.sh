@@ -34,6 +34,8 @@ function init_helm_ecr() {
 function init_kube() {
     cd ../helm
 
+    kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
     helm repo update
 

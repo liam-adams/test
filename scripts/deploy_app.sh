@@ -30,6 +30,7 @@ function install_helm_chart() {
     cd ../helm
     helm package search-api
     helm upgrade -i search-api ./search-api-0.1.0.tgz --values search-api/values.yaml --namespace search-api
+    kubectl -n search-api autoscale deployment search-api --cpu-percent=60 --min=1 --max=10
 }
 
 function build_py_package() {
