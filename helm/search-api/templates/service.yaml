@@ -3,8 +3,8 @@ kind: Service
 metadata:
   name: {{ .Values.name }}
 spec:
-  selector:
-    app.kubernetes.io/name: {{ .Values.name }} # looks for pods with this name
+  selector: 
+    app: {{ .Values.name }} # looks for pods with this label
   ports:
     - port: {{ .Values.service.externalPort }}
       targetPort: {{ .Values.service.internalPort }}

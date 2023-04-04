@@ -10,6 +10,7 @@ module "search_api" {
   desired_capacity     = var.desired_capacity
   min_capacity         = var.min_capacity
   max_capacity         = var.max_capacity
+  public_access_ips    = var.public_access_ips
   #redis_cluster_size   = var.redis_cluster_size
   #redis_instance_type  = var.redis_instance_type
   #redis_engine_version = var.redis_engine_version

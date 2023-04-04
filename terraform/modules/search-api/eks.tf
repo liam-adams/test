@@ -12,7 +12,10 @@ module "eks" {
   subnet_ids      = module.vpc.private_subnets
 
   vpc_id = module.vpc.vpc_id
-    
+
+  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access_cidrs = var.public_access_ips
+
   # creates autoscaling group
   # might be able to use this https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_node_group
   eks_managed_node_groups = {
@@ -26,6 +29,7 @@ module "eks" {
   }
 
   cluster_addons = {}
+
   # not authorized to create these
   /*
   cluster_addons = {
@@ -42,10 +46,10 @@ module "eks" {
   */
 
   # due to insufficient permissions
-  create_kms_key = false
+  create_kms_key              = false
   create_cloudwatch_log_group = false
-  cluster_encryption_config = {}
-  enable_irsa = false
+  cluster_encryption_config   = {}
+  enable_irsa                 = false
 }
 
 /*

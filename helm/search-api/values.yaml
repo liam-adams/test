@@ -2,7 +2,7 @@ name: search-api
 
 image:
   repository: lbadams2/assessment
-  tag: latest
+  tag: 0.1.7
   pullPolicy: IfNotPresent
 replicas: 1
 
@@ -11,11 +11,12 @@ service:
   internalPort: 8000
 
 ingress:
-  class: alb
-
-service-account:
-  role-arn: arn:aws:iam::562646969323:role/AmazonEKSLoadBalancerControllerRole
+  class: nginx
 
 resources:
-  limits: {}
-  requests: {}
+  limits: 
+    cpu: 4G
+    memory: 2
+  requests:
+    cpu: .25
+    memory: .75G

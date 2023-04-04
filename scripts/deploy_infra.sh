@@ -8,6 +8,7 @@ function apply_terraform() {
     cd ../terraform
     terraform init
     terraform apply
+    aws eks update-kubeconfig --region $region --name $repo_name
 }
 
 
@@ -30,21 +31,31 @@ function init_helm_ecr() {
         --set serviceAccount.name=aws-load-balancer-controller
 }
 
-function init_helm() {
+function init_kube() {
     cd ../helm
-    helm package search-api
 
-    helm repo add eks https://aws.github.io/eks-charts
+    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
     helm repo update
-    helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
-        -n kube-system \
-        --set clusterName=search-api \
-        --set serviceAccount.create=false \
-        --set serviceAccount.name=aws-load-balancer-controller
+
+    kubectl config use-context arn:aws:eks:$region:$account_id:cluster/$repo_name
+    helm upgrade -i ingress-nginx ingress-nginx/ingress-nginx \
+        --version 4.6.0 \
+        --namespace kube-system \
+        --values ingress-nginx/values.yaml
+    # kubectl get -n kube-system service/ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+    
+    kubectl create namespace search-api
+
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm install redis bitnami/redis --namespace search-api --values redis/values.yaml
+    
+    kubectl -n search-api create secret generic aws-creds \
+        --from-literal=aws_user=$AWS_ACCESS_KEY_ID \
+        --from-literal=aws_secret=$AWS_SECRET_ACCESS_KEY
 }
 
 export AWS_ACCESS_KEY_ID=$1
 export AWS_SECRET_ACCESS_KEY=$2
 
 apply_terraform
-init_helm
+init_kube

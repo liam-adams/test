@@ -24,6 +24,7 @@ module "vpc" {
   }
 }
 
+/*
 resource "aws_security_group" "alb" {
   name        = "eks_alb_security_group"
   description = "Allow https"
@@ -67,3 +68,4 @@ resource "aws_security_group" "redis" {
     security_groups = [aws_security_group.alb.id]
   }
 }
+*/

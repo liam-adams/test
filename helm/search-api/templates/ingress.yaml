@@ -2,10 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.name }}
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
+  ingressClassName: {{ .Values.ingress.class }}
   rules:
   - http:
       paths:
@@ -15,11 +13,11 @@ spec:
           service:
             name: {{ .Values.name }}
             port:
-              number: {{ .Values.externalPort }}
+              number: {{ .Values.service.externalPort }}
       - path: /
         pathType: Prefix
         backend:
           service:
             name: {{ .Values.name }}
             port:
-              number: {{ .Values.externalPort }}
+              number: {{ .Values.service.externalPort }}

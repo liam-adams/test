@@ -3,6 +3,7 @@
 * Terraform 1.4.4
 * Helm 3.11.2
 * Docker 2.10.23
+* AWS CLI 2.11.8
 
 ## Deploy Infra
 ```bash

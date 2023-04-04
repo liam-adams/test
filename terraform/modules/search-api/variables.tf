@@ -43,6 +43,11 @@ variable max_capacity {
     type = number
 }
 
+variable public_access_ips {
+    description = "IP addresses that can access EKS cluster and load balancer"
+    type = list(string)
+}
+
 /*
 variable redis_cluster_size {
     description = "size of redis cluster"
